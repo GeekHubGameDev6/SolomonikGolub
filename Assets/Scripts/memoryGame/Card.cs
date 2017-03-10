@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,41 +6,41 @@ namespace MemoryGame
 {
     public class Card : MonoBehaviour
     {
-        public static bool DO_NOT = false;
+        public static bool DoNot = false;
 
         [SerializeField]
-        private int state;
+        private CardState _state;
         [SerializeField]
-        private int cardValue = 0;
+        private int _cardValue = 0;
         [SerializeField]
-        private bool initialized = false;
+        private bool _initialized = false;
 
-        private Sprite cardBack;
-        private Sprite cardFace;
+        private Sprite _cardBack;
+        private Sprite _cardFace;
 
-        private GameObject manager;
+        private GameObject _manager;
 
         public int CardValue
         {
             get
             {
-                return cardValue;
+                return _cardValue;
             }
             internal set
             {
-                cardValue = value;
+                _cardValue = value;
             }
         }
 
-        public int State
+        public CardState State
         {
             get
             {
-                return state;
+                return _state;
             }
             set
             {
-                state = value;
+                _state = value;
             }
         }
 
@@ -50,31 +48,32 @@ namespace MemoryGame
         {
             get
             {
-                return initialized;
+                return _initialized;
             }
             set
             {
-                initialized = value;
+                _initialized = value;
             }
         }
 
         private void Awake()
         {
-            state = 1;
-            manager = GameObject.FindGameObjectWithTag("MemoryGameManager");
+            _state = CardState.Opened;
+            _manager = GameObject.FindGameObjectWithTag("MemoryGameManager");
         }
 
         public void FlipCard()
         {
-            if (state == 0)
-                state = 1;
-            else if (state == 1)
-                state = 0;
 
-            if (state == 0 && !DO_NOT)
-                GetComponent<Image>().sprite = cardBack;
-            else if (state == 1 && !DO_NOT)
-                GetComponent<Image>().sprite = cardFace;
+            if(_state == CardState.Closed)
+                _state = CardState.Opened;
+            else if(_state == CardState.Opened)
+                _state = CardState.Closed;
+
+            if (State == CardState.Closed && !DoNot)
+                GetComponent<Image>().sprite = _cardBack;
+            else if (State == CardState.Opened && !DoNot)
+                GetComponent<Image>().sprite = _cardFace;
         }
 
         internal void FalseCheck()
@@ -85,19 +84,27 @@ namespace MemoryGame
         private IEnumerator Pause()
         {
             yield return new WaitForSeconds(0.5f);
-            if (state == 0)
-                GetComponent<Image>().sprite = cardBack;
-            else if (state == 1)
-                GetComponent<Image>().sprite = cardFace;
-            DO_NOT = false;
+
+            if (_state == CardState.Closed)
+                GetComponent<Image>().sprite = _cardBack;
+            else if (_state == CardState.Opened)
+                GetComponent<Image>().sprite = _cardFace;
+            DoNot = false;
         }
 
         internal void SetupGraphic()
         {
-            cardBack = manager.GetComponent<MemoryGameManager>().GetCardBack();
-            cardFace = manager.GetComponent<MemoryGameManager>().GetCardFace(cardValue);
+            _cardBack = _manager.GetComponent<MemoryGameManager>().GetCardBack();
+            _cardFace = _manager.GetComponent<MemoryGameManager>().GetCardFace(_cardValue);
 
             FlipCard();
         }
+    }
+
+    public enum CardState
+    {
+        Closed,
+        Opened,
+        Static
     }
 }

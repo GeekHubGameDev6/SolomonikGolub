@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,20 +6,20 @@ namespace MemoryGame
 {
     public class MemoryGameManager : MonoBehaviour
     {
-        public Sprite[] cardFaces;
-        public Sprite cardBack;
-        public GameObject[] cards;
+        public Sprite[] CardFaces;
+        public Sprite CardBack;
+        public GameObject[] Cards;
 
-        public Text matchText;
+        public Text MatchText;
 
-        private bool init = false;
+        private bool _init = false;
 
         [SerializeField]
-        private int matches = 13;
+        private int _matches = 13;
 
         private void Update()
         {
-            if (!init)
+            if (!_init)
                 InitializeCards();
 
             if (Input.GetMouseButtonUp(0))
@@ -34,9 +32,9 @@ namespace MemoryGame
         {
             List<int> c = new List<int>();
 
-            for (int i = 0; i < cards.Length; i++)
+            for (int i = 0; i < Cards.Length; i++)
             {
-                if (cards[i].GetComponent<Card>().State == 1)
+                if (Cards[i].GetComponent<Card>().State == CardState.Opened)
                     c.Add(i);
             }
 
@@ -48,24 +46,24 @@ namespace MemoryGame
 
         private void CardComparison(List<int> c)
         {
-            Card.DO_NOT = true;
+            Card.DoNot = true;
 
-            int x = 0;
+            var x = CardState.Closed;
 
-            if (cards[c[0]].GetComponent<Card>().CardValue == cards[c[1]].GetComponent<Card>().CardValue)
+            if (Cards[c[0]].GetComponent<Card>().CardValue == Cards[c[1]].GetComponent<Card>().CardValue)
             {
-                x = 2;
-                matches--;
-                matchText.text = "Number of Matches: " + matches;
+                x = CardState.Static;
+                _matches--;
+                MatchText.text = "Number of Matches: " + _matches;
 
-                if (matches == 0)
+                if (_matches == 0)
                     UnityEngine.SceneManagement.SceneManager.LoadScene("memoryGame");
             }
 
             for (int i = 0; i < c.Count; i++)
             {
-                cards[c[i]].GetComponent<Card>().State = x;
-                cards[c[i]].GetComponent<Card>().FalseCheck();
+                Cards[c[i]].GetComponent<Card>().State = x;
+                Cards[c[i]].GetComponent<Card>().FalseCheck();
             }
         }
 
@@ -73,29 +71,29 @@ namespace MemoryGame
         {
             for (int id = 0; id < 2; id++)
             {
-                for (int i = 1; i < matches + 1; i++)
+                for (int i = 1; i < _matches + 1; i++)
                 {
                     bool test = false;
                     int choice = 0;
 
                     while (!test)
                     {
-                        choice = UnityEngine.Random.Range(0, cards.Length);
-                        test = !(cards[choice].GetComponent<Card>().Initialized);
+                        choice = UnityEngine.Random.Range(0, Cards.Length);
+                        test = !(Cards[choice].GetComponent<Card>().Initialized);
                     }
 
-                    cards[choice].GetComponent<Card>().CardValue = i;
-                    cards[choice].GetComponent<Card>().Initialized = true;
+                    Cards[choice].GetComponent<Card>().CardValue = i;
+                    Cards[choice].GetComponent<Card>().Initialized = true;
                 }
             }
 
-            foreach (var item in cards)
+            foreach (var item in Cards)
             {
                 item.GetComponent<Card>().SetupGraphic();
             }
 
-            if (!init)
-                init = true;
+            if (!_init)
+                _init = true;
         }
 
         internal Sprite GetCardFace(int i)
@@ -103,12 +101,12 @@ namespace MemoryGame
             if (i <= 0)
                 i = 1;
 
-            return cardFaces[i - 1];
+            return CardFaces[i - 1];
         }
 
         internal Sprite GetCardBack()
         {
-            return cardBack;
+            return CardBack;
         }
     }
 }
