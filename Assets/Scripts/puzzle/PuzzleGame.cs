@@ -13,8 +13,8 @@ public class PuzzleGame : MonoBehaviour
     private PuzzleSelection[,] puzzles;
 
     public PuzzleSelection puzzlePrefab;
-    public Texture puzzlePicture;
-
+    public Texture[] puzzlePictures;
+    private Texture _puzzlePicture;
     public RectTransform panel;
 
     public GameObject gameOverPanel;
@@ -60,7 +60,7 @@ public class PuzzleGame : MonoBehaviour
         for (int position = 0; position < size * size; position++)
         {
             int number = logic.GetNumber(position);
-            puzzles[position % size, position / size].image.texture = (number >= 0) ? puzzlePicture : ((!show) ? null : puzzlePicture);
+            puzzles[position % size, position / size].image.texture = (number >= 0) ? _puzzlePicture : ((!show) ? null : _puzzlePicture);
 
             if (number >= 0)
                 puzzles[position % size, position / size].PuzzlePart = puzzlesParts[number % size, number / size];
@@ -69,6 +69,7 @@ public class PuzzleGame : MonoBehaviour
 
     private void InitPictures()
     {
+        _puzzlePicture = GetPuzzlePicture();
         float w, h;
         w = panel.rect.width / size;  // 512 P.width / size = 128
         h = panel.rect.height / size;
@@ -110,6 +111,11 @@ public class PuzzleGame : MonoBehaviour
                 //images[x, y].CreatePuzzlePiece(size);
             }
         }
+    }
+
+    private Texture GetPuzzlePicture()
+    {
+        return puzzlePictures[UnityEngine.Random.Range(0, puzzlePictures.Length)];
     }
 
 
@@ -167,7 +173,7 @@ public class PuzzleGame : MonoBehaviour
             for (int y = 0; y < size; y++)
             {
 
-                puzzles[x, y].image.texture = puzzlePicture;
+                puzzles[x, y].image.texture = _puzzlePicture;
                 puzzles[x, y].PuzzlePart = puzzlesParts[x, y];
             }
         }
