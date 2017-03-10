@@ -34,7 +34,7 @@ namespace Puzzle
         {
             int initsize = 3;
             int gamesWon = 0;
-            int currentsize = 0;
+            int currentsize = 0;            
             for (int i = 0; i < 100; i++)
             {
                 currentsize = initsize + (gamesWon / initsize);// + (gamesWon % initsize);
