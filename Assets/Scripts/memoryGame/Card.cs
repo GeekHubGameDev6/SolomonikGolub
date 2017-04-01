@@ -15,6 +15,8 @@ namespace MemoryGame
         [SerializeField]
         private bool _initialized = false;
 
+        public RectTransform rt;
+
         private Sprite _cardBack;
         private Sprite _cardFace;
 
@@ -62,6 +64,12 @@ namespace MemoryGame
             _manager = GameObject.FindGameObjectWithTag("MemoryGameManager");
         }
 
+        public void ResetCart()
+        {
+            _cardValue = 0;
+            _initialized = false;
+        }
+
         public void FlipCard()
         {
 
@@ -106,5 +114,9 @@ namespace MemoryGame
         Closed,
         Opened,
         Static
+    }
+    interface ICardPooler
+    {
+        Card GetCard();
     }
 }
