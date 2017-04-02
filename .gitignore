@@ -29,3 +29,5 @@ sysinfo.txt
 *.apk
 *.exe
 *.unitypackage
+/Assets/Sprites.meta
+/Assets/Artwork.meta
