@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 namespace Puzzle
 {
-   public delegate void PuzzleGameComple();
+    public delegate void PuzzleGameComple();
 
     public class PuzzleGame : MonoBehaviour
     {
         public int openedDoors;
-        private const int initSize = 3;
+        private const int INIT_SIZE = 3;
         private PuzzleLogic logic;
         public int size;
         private Rect[,] puzzlesParts;
@@ -19,10 +19,13 @@ namespace Puzzle
         private PuzzleSelection[,] puzzles;
 
         public PuzzleSelection puzzlePrefab;
-        public Texture[] puzzlePictures;
-        private Texture _puzzlePicture;
-        public RectTransform gamePanel;
 
+        public Texture[] puzzlePictures;                // Array of pictures        
+        private Texture _puzzlePicture;                 // Current Selected Picture;
+
+        // public Canvas Objects
+        public RectTransform gamePanel;
+        public RawImage tipImage;
         public GameObject gameOverPanel;
 
         public Texture PuzzlePicture
@@ -34,26 +37,29 @@ namespace Puzzle
                 return _puzzlePicture;
             }
         }
+
         //Tips
         public float timeToShowTip;
-        public RawImage tipImage;
         private bool showTip;
         public float currentTime = 0;
 
-        public PuzzleGameComple puzzleComplete;
+        //public PuzzleGameComple puzzleComplete;
 
         private void Start()
         {
             openedDoors = 0;
-            puzzleComplete += GameOver;
+            //puzzleComplete += GameOver;
             gameOverPanel.SetActive(false);
+            gamePanel.gameObject.SetActive(false);
+            gamePanel.sizeDelta = new Vector2(gamePanel.rect.height, gamePanel.sizeDelta.y);
             //Debug.Log(panel.rect.width + "panel scale X");
             //StartGame();
         }
 
         public void StartGame()
         {
-            size = initSize + openedDoors / initSize;
+            gamePanel.gameObject.SetActive(true);
+            size = INIT_SIZE + openedDoors / INIT_SIZE;
             showTip = false;
             currentTime = 0;
             gameOverPanel.SetActive(false);
@@ -70,7 +76,6 @@ namespace Puzzle
             {
                 logic.ShiftRandom();
             }
-
             Refresh();
         }
         public void SetupPanels(RectTransform gamePanel, RawImage tipImage)
@@ -81,6 +86,13 @@ namespace Puzzle
             tipImage.texture = _puzzlePicture;
 
         }
+
+        public void SetupPanels()
+        {
+            _puzzlePicture = GetPuzzlePicture();
+            tipImage.texture = _puzzlePicture;
+        }
+
         private void Refresh(bool show = false)
         {
             for (int position = 0; position < size * size; position++)
@@ -145,8 +157,6 @@ namespace Puzzle
             return puzzlePictures[UnityEngine.Random.Range(0, puzzlePictures.Length)];
         }
 
-
-
         //private void CropSprite()
         //{
         //    sprites = new Sprite[size, size];
@@ -189,7 +199,8 @@ namespace Puzzle
             if (logic.CheckNumbers())
             {
                 Debug.Log("You won!!");
-                puzzleComplete.Invoke(); //GameOver();
+                GameOver();
+                //puzzleComplete.Invoke(); //GameOver();
             }
         }
 
@@ -217,6 +228,15 @@ namespace Puzzle
         public void Restart()
         {
             StartGame();
+        }
+        public void OnCloseBtnCLick()
+        {
+            GameManager.Instance.FadeBack();
+            print("OnCloseBtnClick");
+        }
+        public void OnInfoBtnClick()
+        {
+            print("OnInfoBtnClick");
         }
         public void ShowTip()
         {

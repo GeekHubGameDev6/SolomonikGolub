@@ -51,7 +51,7 @@ namespace Puzzle
                 Debug.Log("Player comes");
                 manager.SetupPanels(gamePanel, tipImage);
                 manager.StartGame();
-                manager.puzzleComplete += OpenDoor;
+                //manager.puzzleComplete += OpenDoor;
             }
         }
 
@@ -62,14 +62,14 @@ namespace Puzzle
                 if (state == DoorState.Opening || state == DoorState.Opened)
                 {
                     tipImage.gameObject.SetActive(true);
-                    manager.puzzleComplete -= OpenDoor;
+                    //manager.puzzleComplete -= OpenDoor;
                 }
                 else if (state == DoorState.Locked)
                 {
                     cg.alpha = 0;
                     tipImage.texture = defaultImage;
                     tipImage.gameObject.SetActive(true);
-                    manager.puzzleComplete -= OpenDoor;
+                    //manager.puzzleComplete -= OpenDoor;
                 }
 
             }
