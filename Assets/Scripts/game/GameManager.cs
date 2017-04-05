@@ -88,6 +88,8 @@ public class GameManager : MonoBehaviour
         FadeBack();
     }
 
+
+    //  Call this when user want to interupt his game
     public void FadeBack()
     {
         FadeManager.Instance.FadeIn();
