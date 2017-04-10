@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class Inventar : MonoBehaviour {
     List<Item> list;
     public GameObject inventory;
+    public GameObject inventIco;
+
 	// Use this for initialization
 	void Start () {
         list = new List<Item>();
@@ -55,10 +57,10 @@ public class Inventar : MonoBehaviour {
                     if (inventory.transform.childCount >= i)
                     {
 
-                      //  GameObject img = Instantiate(Cont);
-                      //  img.transform.SetParent(inventory.transform.GetChild(i).transform);
-                      //  img.GetComponent<Image>().sprite = Resources.Load<Sprite>(it.sprite);
-                      //  img.AddComponent<Button>().onClick.AddListener(() => remove(it, img));
+                        GameObject img = Instantiate(inventIco);
+                        img.transform.SetParent(inventory.transform.GetChild(i).transform);
+                        img.GetComponent<Image>().sprite = Resources.Load<Sprite>(it.icon);
+                        img.AddComponent<Button>().onClick.AddListener(() => remove(it, img));
 
 
 
@@ -77,13 +79,14 @@ public class Inventar : MonoBehaviour {
 
 
         GameObject newo = Instantiate<GameObject>(Resources.Load<GameObject>(it.prefab));
-        Destroy(newo.GetComponent<Rigidbody>());
-        newo.transform.SetParent(GameObject.Find("MainCamera").transform);
+      //  Destroy(newo.GetComponent<Rigidbody>());
+       // newo.transform.SetParent(GameObject.Find("MainCamera").transform);
 
 
-        newo.transform.localPosition = GameObject.Find("MainCamera").transform.position - transform.up * 3 - transform.forward * 1.6f;
-        newo.transform.localRotation = GameObject.Find("MainCamera").transform.rotation;
-
+        newo.transform.localPosition = GameObject.Find("MainCamera").transform.position + transform.up + transform.forward ;
+        //newo.transform.localRotation = GameObject.Find("MainCamera").transform.rotation;
+        list.Remove(it);
+        Destroy(obj);
 
 
 
