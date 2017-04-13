@@ -43,41 +43,30 @@ public class Inventar : MonoBehaviour {
             if (inventory.activeSelf)
             {
                 inventory.SetActive(false);
-             //   for (int i = 0; i < inventory.transform.childCount; i++)
-             //   {
-             //       if (inventory.transform.GetChild(i).transform.childCount > 0)
-             //       {
-             //           Destroy(inventory.transform.GetChild(i).transform.GetChild(0).gameObject);
-             //       }
-             //   }
+            
             }
             else
             {
                 inventory.SetActive(true);
-           //     int count = list.Count;
-           //     for (int i = 0; i < count; i++)
-           //     {
-           //         Item it = list[i];
-           //         if (inventory.transform.childCount >= i)
-           //         {
-
-            //            GameObject img = Instantiate(inventIco);
-            //            img.transform.SetParent(inventory.transform.GetChild(i).transform);
-            //            img.GetComponent<Image>().sprite = Resources.Load<Sprite>(it.icon);
-            //            img.AddComponent<Button>().onClick.AddListener(() => remove(it, img));
-
-
-
-
-           //         }
-            //        else break;
-
-              //  }
+          
             }
         }
 
 
     }
+
+    public void addItem (Item it)
+    {
+        list.Add(it);
+        GameObject img = Instantiate(inventIco);
+       // Debug.Log("invnt" + list.Count + img);
+        img.transform.SetParent(inventory.transform.GetChild(list.Count - 1).transform);
+        img.GetComponent<Image>().sprite = Resources.Load<Sprite>(it.icon);
+        //  img.AddComponent<Button>().onClick.AddListener(() => remove(item, img));
+        Destroy(it.gameObject);
+    }
+
+
     void remove(Item it, GameObject obj)
     {
 
@@ -95,20 +84,10 @@ public class Inventar : MonoBehaviour {
       //  newo.transform.position = cam.transform.position - transform.up*10 + transform.forward*10 ;
         //newo.transform.localRotation = cam.transform.rotation;
         list.Remove(it);
-        Destroy(obj);
-
-
-
-
-
-
-
-
 
         Destroy(obj);
         list.Remove(it);
 
-
-
+        
     }
 }
