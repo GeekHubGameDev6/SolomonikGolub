@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace Puzzle
 {
+    //Deactivated Script
     public class Door : MonoBehaviour
     {
         public DoorState state = DoorState.Locked;
@@ -51,7 +52,7 @@ namespace Puzzle
                 Debug.Log("Player comes");
                 manager.SetupPanels(gamePanel, tipImage);
                 manager.StartGame();
-                manager.puzzleComplete += OpenDoor;
+                //PuzzleGame.Instance.puzzleComplete += OpenDoor;
             }
         }
 
@@ -62,14 +63,14 @@ namespace Puzzle
                 if (state == DoorState.Opening || state == DoorState.Opened)
                 {
                     tipImage.gameObject.SetActive(true);
-                    manager.puzzleComplete -= OpenDoor;
+                   // manager.puzzleComplete -= OpenDoor;
                 }
                 else if (state == DoorState.Locked)
                 {
                     cg.alpha = 0;
                     tipImage.texture = defaultImage;
                     tipImage.gameObject.SetActive(true);
-                    manager.puzzleComplete -= OpenDoor;
+                   // manager.puzzleComplete -= OpenDoor;
                 }
 
             }
