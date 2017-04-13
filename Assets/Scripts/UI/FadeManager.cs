@@ -43,13 +43,13 @@ public class FadeManager : MonoBehaviour {
 
     public void FadeOut()
     {
-        Fade(false, 3.0f);
+        Fade(false, 1f);
     }
 
     public void FadeIn()
     {
-        Fade(true, 1.5f);
-        Invoke("FadeOut", 1.5f);
+        Fade(true, 0.5f);
+        Invoke("FadeOut", 0.5f);
         print("invoking");
     }
 

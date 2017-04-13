@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
-{
+{   
     public static GameManager Instance { get; set; }
 
     public CanvasGroup gameCanvasGroup;
+    public CanvasGroup inventoryCanvasGroup;
 
     public GameObject[] panels;
 
     private int _currentLevel;
-    private float _fadeInDuration = 1.5f;
-    private float _fadeOutDuration = 3.0f;
+    private float _fadeInDuration = 0.5f;
+    private float _fadeOutDuration = 1f;
 
     [SerializeField]
     private GameObject _backgroundObject;
@@ -29,21 +30,34 @@ public class GameManager : MonoBehaviour
     {
         _backgroundObject.SetActive(false);
         EnableCanvasGroup(gameCanvasGroup, false);
+        EnableCanvasGroup(inventoryCanvasGroup, true);
     }
 
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
+            // GameManager.Instance.StartMiniGame(GameType.PuzzleGame);
             StartMiniGame(GameType.PuzzleGame);
         }
     }
 
     public void StartMiniGame(GameType miniGame)
     {
-        _backgroundObject.SetActive(true);
         FadeManager.Instance.FadeIn();
+        
+        EnableFPSController(false);
         StartCoroutine(ShowPanel(miniGame));
+    }
+
+
+    /// <summary>
+    /// pass true if enable, false to disable
+    /// </summary>
+    /// <param name="on"></param>
+    private void EnableFPSController(bool on)
+    {
+        GameObject.FindGameObjectWithTag("Player").GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = on;
     }
 
     internal void OnGameFinished(bool win = true)
@@ -57,10 +71,12 @@ public class GameManager : MonoBehaviour
     private IEnumerator ShowPanel(GameType gType)
     {
         yield return new WaitForSeconds(_fadeInDuration);
+        _backgroundObject.SetActive(true);
         //gameCanvasGroup.alpha = 1;
         //gameCanvasGroup.interactable = true;
         //gameCanvasGroup.blocksRaycasts = true;
         EnableCanvasGroup(gameCanvasGroup, true);
+        EnableCanvasGroup(inventoryCanvasGroup, false);
 
 
         switch (gType)
@@ -83,18 +99,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void OnGameCompleteBtnClick()
-    {
-        //Fade back to the normal view
-        MakeSomeDelay(1.5f);
-        FadeBack();
-    }
+
 
     private void FadeBack()
     {
-        FadeManager.Instance.FadeIn();
-
         StartCoroutine(HidePanels());
+        FadeManager.Instance.FadeIn();
     }
 
     private void EnableCanvasGroup(CanvasGroup group, bool enable)
@@ -103,11 +113,20 @@ public class GameManager : MonoBehaviour
         group.blocksRaycasts = enable;
         group.alpha = (enable) ? 1 : 0;
     }
+
+    public void OnGameCompleteBtnClick()
+    {
+        //Fade back to the normal view
+        FadeBack();
+        MakeSomeDelay(1.5f);
+        
+
+    }
     public void OnCLoseBtnClick()
     {
-        GameManager.Instance.FadeBack();
-        print("OnCLoseBtnClick");
-        _backgroundObject.SetActive(false);
+        FadeBack();
+        print("OnCLoseBtnClick");      
+        
     }
 
     private IEnumerator MakeSomeDelay(float time)
@@ -119,6 +138,9 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_fadeInDuration);
         EnableCanvasGroup(gameCanvasGroup, false);
+        EnableCanvasGroup(inventoryCanvasGroup, true);
+        _backgroundObject.SetActive(false);
+        EnableFPSController(true);
 
         foreach (var item in panels)
         {
@@ -129,15 +151,15 @@ public class GameManager : MonoBehaviour
     }
 }
 
-    interface IPooler
-    {
-        PuzzleSelection GetPooledObject();
-        void DeactivateObjects();
-    }
+interface IPooler
+{
+    PuzzleSelection GetPooledObject();
+    void DeactivateObjects();
+}
 
-    public enum GameType
-    {
-        PuzzleGame = 0,
-        MemoryGame,
-        GuessWordGame
-    }
+public enum GameType
+{
+    PuzzleGame = 0,
+    MemoryGame,
+    GuessWordGame
+}
