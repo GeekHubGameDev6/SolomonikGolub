@@ -10,7 +10,9 @@ public class Item : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        Debug.Log(this);
+      //  GameManager.Instance.StartMiniGame(GameType.PuzzleGame);
+        Debug.Log("Have done " + this);
+
         inventar.addItem(this);
             }
 

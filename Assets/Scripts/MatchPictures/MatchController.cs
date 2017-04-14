@@ -22,6 +22,7 @@ public class MatchController : MonoBehaviour
     public GameObject resultPanel;
     public Text resultText;
     public Color right, wrong;
+    bool result=false;
 
     private void Start()
     {
@@ -46,6 +47,7 @@ public class MatchController : MonoBehaviour
             if ((int)holdersParent.GetChild(i).childCount <= 0 || ((int)upperParent.GetChild(i).GetComponent<MatchAnimalItem>().animalType !=
                 (int)holdersParent.GetChild(i).GetChild(0).GetComponent<MatchFoodItem>().foodType))
             {
+                result = false;
                 resultPanel.SetActive(true);
                 resultText.text = "You have made a mistake, pls try again";
                 resultText.color = wrong;
@@ -54,12 +56,15 @@ public class MatchController : MonoBehaviour
         }
 
         Debug.Log("Win");
+        result = true;
         resultPanel.SetActive(true);
         resultText.text = "Everything OK";
         resultText.color = right;
     }
 
-
+    public bool getResult(){
+        return result;
+    }
 }
 
 public enum AnimalType

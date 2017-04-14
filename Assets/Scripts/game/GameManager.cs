@@ -58,6 +58,11 @@ public class GameManager : MonoBehaviour
     private void EnableFPSController(bool on)
     {
         GameObject.FindGameObjectWithTag("Player").GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = on;
+        GameObject[] tmans=GameObject.FindGameObjectsWithTag("TouchManager");
+        foreach (GameObject tman in tmans)
+        {
+            tman.SetActive(on);
+        }
     }
 
     internal void OnGameFinished(bool win = true)
@@ -75,6 +80,7 @@ public class GameManager : MonoBehaviour
         //gameCanvasGroup.alpha = 1;
         //gameCanvasGroup.interactable = true;
         //gameCanvasGroup.blocksRaycasts = true;
+        EnableFPSController(true);
         EnableCanvasGroup(gameCanvasGroup, true);
         EnableCanvasGroup(inventoryCanvasGroup, false);
 
