@@ -33,7 +33,7 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         placeHolderParent = parentToReturnTo;
         offset = this.transform.position - new Vector3(Input.mousePosition.x, Input.mousePosition.y, transform.position.z);
         this.transform.SetParent(this.transform.parent.parent);
-        this.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform);
+        //this.transform.SetParent(GameObject.FindGameObjectWithTag("Canvas").transform);
 
         GetComponent<CanvasGroup>().blocksRaycasts = false;
     }

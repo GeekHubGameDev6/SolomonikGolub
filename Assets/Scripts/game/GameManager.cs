@@ -43,6 +43,10 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        foreach (var item in panels)
+        {
+            item.SetActive(false);
+        }
         _gameState = GameState.WaitingForGame;
         _backgroundObject.SetActive(false);
         EnableCanvasGroup(gameCanvasGroup, false);
