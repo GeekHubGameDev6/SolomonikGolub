@@ -128,6 +128,7 @@ namespace Puzzle
 
                     newImg.transform.SetParent(gamePanel, false);
                     newImg.GetComponent<RectTransform>().sizeDelta = new Vector2(w, h);
+                    newImg.transform.rotation = gamePanel.rotation;
                     newImg.name = (y * size + x).ToString();
                     newImg.GetComponent<Button>().onClick.AddListener(() => { this.OnClick(newImg.name); });
 

@@ -35,7 +35,7 @@ namespace MemoryGame
         {
             for (int i = 0; i < _cardList.Count; i++)
             {
-                if (_cardList[i].gameObject.activeInHierarchy)
+                if (_cardList[i].gameObject.activeSelf)
                 {
                     _cardList[i].GetComponent<Card>().ResetCard();
                     _cardList[i].transform.SetParent(this.transform);

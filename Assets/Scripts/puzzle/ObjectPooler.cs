@@ -15,6 +15,7 @@ public class ObjectPooler : MonoBehaviour, IPooler
         {
             PuzzleSelection go = Instantiate(objectPrefab);
             go.gameObject.SetActive(false);
+            go.transform.SetParent(this.transform);
             _objList.Add(go);
         }
     }
@@ -45,7 +46,11 @@ public class ObjectPooler : MonoBehaviour, IPooler
         for (int i = 0; i < _objList.Count; i++)
         {
             if (_objList[i].gameObject.activeInHierarchy)
+            {
+                _objList[i].transform.SetParent(this.transform);
+                _objList[i].transform.localScale = Vector3.one;
                 _objList[i].gameObject.SetActive(false);
+            }
         }
     }
 }

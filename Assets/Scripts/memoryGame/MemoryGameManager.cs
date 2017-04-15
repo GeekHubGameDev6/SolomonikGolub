@@ -150,6 +150,7 @@ namespace MemoryGame
             newCard.rt.localPosition = new Vector2(
                 i % _cardsInARow * width + _cardOffset,
                 i / _cardsInARow * -height - _cardOffset);
+            newCard.rt.rotation = Quaternion.identity;
             newCard.transform.localScale = Vector2.one;
 
             newCard.rt.sizeDelta = new Vector2(width - _cardOffset, height - _cardOffset);
