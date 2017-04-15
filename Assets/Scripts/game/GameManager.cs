@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
 
     private GameState _gameState;
 
+    public GameObject gameEndPanel;
+
     private void Awake()
     {
         if (Instance == null)
@@ -58,7 +60,9 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             // GameManager.Instance.StartMiniGame(GameType.PuzzleGame);
-            StartMiniGame(GameType.MemoryGame);
+            // StartMiniGame(GameType.MemoryGame);
+
+            ShowGameEndPanel();
         }
     }
 
@@ -111,9 +115,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_fadeInDuration);
         _backgroundObject.SetActive(true);
-        //gameCanvasGroup.alpha = 1;
-        //gameCanvasGroup.interactable = true;
-        //gameCanvasGroup.blocksRaycasts = true;
         EnableFPSController(true);
         EnableCanvasGroup(gameCanvasGroup, true);
         EnableCanvasGroup(inventoryCanvasGroup, false);
@@ -141,7 +142,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-    
+
     private void FadeBack()
     {
         StartCoroutine(HidePanels());
@@ -155,7 +156,7 @@ public class GameManager : MonoBehaviour
         group.alpha = (enable) ? 1 : 0;
     }
     public void OnGameFinished(bool win = true)
-    {        
+    {
         if (win)
         {
             GameOverManager.Instance.ShowGameoverPanel(win);
@@ -200,11 +201,14 @@ public class GameManager : MonoBehaviour
         foreach (var item in panels)
         {
             item.SetActive(false);
-            
+
         }
         _gameState = GameState.WaitingForGame;
+    }
 
-
+    public void ShowGameEndPanel()
+    {
+        gameEndPanel.SetActive(true);
     }
 }
 
