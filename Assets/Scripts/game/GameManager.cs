@@ -128,10 +128,8 @@ public class GameManager : MonoBehaviour
                 MemoryGame.MemoryGameManager.Instance.InstantiateCards(_memoryGameCards);
                 //_memGameManager.InstantiateCards(4);
                 break;
-            case GameType.MatchPicture:
-                print("match picture goes here");
-                panels[2].SetActive(true);
-                //_memGameManager.InstantiateCards(4);
+            case GameType.GuessWordGame:
+                print("guessWord goes here");
                 break;
             default:
                 break;
@@ -150,7 +148,7 @@ public class GameManager : MonoBehaviour
         group.blocksRaycasts = enable;
         group.alpha = (enable) ? 1 : 0;
     }
-    public void OnGameFinished(bool win = true)
+    internal void OnGameFinished(bool win = true)
     {        
         if (win)
         {
@@ -214,7 +212,7 @@ public enum GameType
 {
     PuzzleGame = 0,
     MemoryGame,
-    MatchPicture
+    GuessWordGame
 }
 
 public enum GameState
