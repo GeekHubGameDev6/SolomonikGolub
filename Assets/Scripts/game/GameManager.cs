@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject _backgroundObject;
 
+    private GameState _gameState;
+
     private void Awake()
     {
         if (Instance == null)
@@ -41,6 +43,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        _gameState = GameState.WaitingForGame;
         _backgroundObject.SetActive(false);
         EnableCanvasGroup(gameCanvasGroup, false);
         EnableCanvasGroup(inventoryCanvasGroup, true);
@@ -57,6 +60,11 @@ public class GameManager : MonoBehaviour
 
     public void StartMiniGame(GameType miniGame)
     {
+        if (_gameState == GameState.Playing)
+        {
+            print("doubleStart");
+            return;
+        }
         FadeManager.Instance.FadeIn();
 
         EnableFPSController(false);
@@ -69,6 +77,8 @@ public class GameManager : MonoBehaviour
     /// <param name="numberGameObject"></param>
     public void StartMiniGame(GameType miniGame, GameObject numberGameObject)
     {
+        if (_gameState == GameState.Playing)
+            return;
         numberObject = numberGameObject;
         FadeManager.Instance.FadeIn();
 
@@ -103,7 +113,7 @@ public class GameManager : MonoBehaviour
         EnableFPSController(true);
         EnableCanvasGroup(gameCanvasGroup, true);
         EnableCanvasGroup(inventoryCanvasGroup, false);
-
+        _gameState = GameState.Playing;
 
         switch (gType)
         {
@@ -139,7 +149,7 @@ public class GameManager : MonoBehaviour
         group.alpha = (enable) ? 1 : 0;
     }
     internal void OnGameFinished(bool win = true)
-    {
+    {        
         if (win)
         {
             GameOverManager.Instance.ShowGameoverPanel(win);
@@ -184,7 +194,9 @@ public class GameManager : MonoBehaviour
         foreach (var item in panels)
         {
             item.SetActive(false);
+            
         }
+        _gameState = GameState.WaitingForGame;
 
 
     }
@@ -201,4 +213,10 @@ public enum GameType
     PuzzleGame = 0,
     MemoryGame,
     GuessWordGame
+}
+
+public enum GameState
+{
+    WaitingForGame = 0,
+    Playing
 }
