@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
-{   
+{
     public static GameManager Instance { get; set; }
 
     public CanvasGroup gameCanvasGroup;
@@ -15,6 +15,19 @@ public class GameManager : MonoBehaviour
     private int _currentLevel;
     private float _fadeInDuration = 0.5f;
     private float _fadeOutDuration = 1f;
+
+    private int _memoryGameCards = 6;
+
+    public int MemoryGameCards
+    {
+        get { return _memoryGameCards; }
+        set { _memoryGameCards = value; }
+    }
+
+    /// <summary>
+    /// NumberObject
+    /// </summary>
+    public GameObject numberObject;
 
     [SerializeField]
     private GameObject _backgroundObject;
@@ -38,14 +51,27 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.K))
         {
             // GameManager.Instance.StartMiniGame(GameType.PuzzleGame);
-            StartMiniGame(GameType.PuzzleGame);
+            StartMiniGame(GameType.MemoryGame);
         }
     }
 
     public void StartMiniGame(GameType miniGame)
     {
         FadeManager.Instance.FadeIn();
-        
+
+        EnableFPSController(false);
+        StartCoroutine(ShowPanel(miniGame));
+    }
+    /// <summary>
+    /// starts selected minigame and takes number gameObjet as a parameter
+    /// </summary>
+    /// <param name="miniGame"></param>
+    /// <param name="numberGameObject"></param>
+    public void StartMiniGame(GameType miniGame, GameObject numberGameObject)
+    {
+        numberObject = numberGameObject;
+        FadeManager.Instance.FadeIn();
+
         EnableFPSController(false);
         StartCoroutine(ShowPanel(miniGame));
     }
@@ -58,20 +84,14 @@ public class GameManager : MonoBehaviour
     private void EnableFPSController(bool on)
     {
         GameObject.FindGameObjectWithTag("Player").GetComponent<UnityStandardAssets.Characters.FirstPerson.FirstPersonController>().enabled = on;
-  //      GameObject[] tmans=GameObject.FindGameObjectsWithTag("TouchManager");
-  //      foreach (GameObject tman in tmans)
-  //      {
-  //          tman.SetActive(on);
-  //      }
+        //      GameObject[] tmans=GameObject.FindGameObjectsWithTag("TouchManager");
+        //      foreach (GameObject tman in tmans)
+        //      {
+        //          tman.SetActive(on);
+        //      }
     }
 
-    internal void OnGameFinished(bool win = true)
-    {
-        if (win)
-        {
-            GameOverManager.Instance.ShowGameoverPanel(win);
-        }
-    }
+
 
     private IEnumerator ShowPanel(GameType gType)
     {
@@ -95,6 +115,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameType.MemoryGame:
                 print("memory goes here");
+                MemoryGame.MemoryGameManager.Instance.InstantiateCards(_memoryGameCards);
                 //_memGameManager.InstantiateCards(4);
                 break;
             case GameType.GuessWordGame:
@@ -104,13 +125,11 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
-
-
-
+    
     private void FadeBack()
     {
         StartCoroutine(HidePanels());
-        FadeManager.Instance.FadeIn();
+        FadeManager.Instance.FadeIn(0.5f, 0.75f);
     }
 
     private void EnableCanvasGroup(CanvasGroup group, bool enable)
@@ -119,21 +138,35 @@ public class GameManager : MonoBehaviour
         group.blocksRaycasts = enable;
         group.alpha = (enable) ? 1 : 0;
     }
-
-    public void OnGameCompleteBtnClick()
+    internal void OnGameFinished(bool win = true)
     {
-        //Fade back to the normal view
-        FadeBack();
-        MakeSomeDelay(1.5f);
-        
-
+        if (win)
+        {
+            GameOverManager.Instance.ShowGameoverPanel(win);
+            if (numberObject != null)
+            {
+                numberObject.SetActive(true);
+                print("other object events goes Here");
+            }
+            else
+            {
+                print("number GameObject is NULL");
+            }
+        }
+        else
+        {
+            print("game lost or was closed");
+            numberObject = null;
+        }
     }
     public void OnCLoseBtnClick()
     {
+        //Fade back to the normal view
         FadeBack();
-        print("OnCLoseBtnClick");      
-        
+        print("OnCLoseBtnClick");
+
     }
+
 
     private IEnumerator MakeSomeDelay(float time)
     {

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Puzzle
 {
-    public delegate void PuzzleGameComple();
+    //public delegate void PuzzleGameComple();
 
     public class PuzzleGame : MonoBehaviour
     {
@@ -188,7 +188,7 @@ namespace Puzzle
             {
                 Debug.Log("You won!!");
                 print("fire GetNumberEventHere");
-                GameOver();
+                GameOver(true);
                 //puzzleComplete.Invoke(); //GameOver();
             }
         }
@@ -205,13 +205,13 @@ namespace Puzzle
             }
         }
 
-        private void GameOver()
+        private void GameOver(bool win)
         {
             openedDoors++;
             _puzzlePooler.DeactivateObjects();
             ShowAll();
             gameOverPanel.SetActive(true);
-            GameManager.Instance.OnGameFinished();
+            GameManager.Instance.OnGameFinished(win);
             tipImage.gameObject.SetActive(false);
         }
 
@@ -221,7 +221,7 @@ namespace Puzzle
         }
         public void OnCloseBtnCLick()
         {
-            //GameManager.Instance.FadeBack();
+            GameOver(false);
             print("OnCloseBtnClick");
         }
         public void OnInfoBtnClick()

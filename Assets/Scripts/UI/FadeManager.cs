@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class FadeManager : MonoBehaviour {
+public class FadeManager : MonoBehaviour
+{
 
     public static FadeManager Instance { get; set; }
     public Image fadeImage;
@@ -46,11 +48,38 @@ public class FadeManager : MonoBehaviour {
         Fade(false, 1f);
     }
 
+    public void FadeOut(float time)
+    {
+        Fade(false, time);
+    }
+
     public void FadeIn()
     {
         Fade(true, 0.5f);
         Invoke("FadeOut", 0.5f);
-        print("invoking");
+    }
+
+    public void FadeIn(float timeTo)
+    {
+        Fade(true, timeTo);
+        Invoke("FadeOut", timeTo);
+    }
+
+    /// <summary>
+    /// FadesIn in "timeTo" seconds, and FadesOut in "timeOut" seconds"
+    /// </summary>
+    /// <param name="timeTo">time in seconds to fadeIn</param>
+    /// <param name="timeOut">time in seconds to fadeOut</param>
+    public void FadeIn(float timeTo, float timeOut)
+    {
+        Fade(true, 0.5f);
+        StartCoroutine(FadeOutCorutine(timeTo, timeOut));
+    }
+
+    private IEnumerator FadeOutCorutine(float timeTo, float timeOut)
+    {
+        yield return new WaitForSeconds(timeTo);
+        FadeOut(timeOut);
     }
 
     private void Fade(bool showing, float duration)
