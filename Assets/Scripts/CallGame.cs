@@ -8,7 +8,7 @@ public class CallGame : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        GameManager.Instance.StartMiniGame(game);
+        GameManager.Instance.StartMiniGame(game, childNumber);
     }
    
 }
