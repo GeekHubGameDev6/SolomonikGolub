@@ -54,10 +54,10 @@ public class MatchController : MonoBehaviour
                 return;
             }
         }
-
+        GameManager.Instance.OnGameFinished(true);
         Debug.Log("Win");
         result = true;
-        resultPanel.SetActive(true);
+        //resultPanel.SetActive(true);
         resultText.text = "Everything OK";
         resultText.color = right;
     }
