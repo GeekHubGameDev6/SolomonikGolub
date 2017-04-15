@@ -7,7 +7,7 @@ public class AnimatedTouch : MonoBehaviour {
     bool toOpen = true;
     private void OnMouseDown()
     {
-        Debug.Log(gameObject);
+        Debug.Log("on animatedtouch"+gameObject);
     
         anim.SetBool("toOpen", toOpen);
         toOpen = !toOpen;

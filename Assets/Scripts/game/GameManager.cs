@@ -161,6 +161,7 @@ public class GameManager : MonoBehaviour
             GameOverManager.Instance.ShowGameoverPanel(win);
             if (numberObject != null)
             {
+               
                 numberObject.SetActive(true);
                 print("other object events goes Here");
             }
