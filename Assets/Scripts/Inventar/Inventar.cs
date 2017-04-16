@@ -62,21 +62,21 @@ public class Inventar : MonoBehaviour {
        // Debug.Log("invnt" + list.Count + img);
         img.transform.SetParent(inventory.transform.GetChild(list.Count - 1).transform);
         img.GetComponent<Image>().sprite = Resources.Load<Sprite>(it.icon);
-        //  img.AddComponent<Button>().onClick.AddListener(() => remove(item, img));
+        img.AddComponent<Button>().onClick.AddListener(() => remove(it, img));
         Destroy(it.gameObject);
     }
 
 
     void remove(Item it, GameObject obj)
     {
-
+        Debug.Log("entered in remove");
 
         GameObject newo = Instantiate<GameObject>(Resources.Load<GameObject>(it.prefab));
 
         Debug.Log(newo);
         
         GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
-        Debug.Log("camera is "+cam);
+        Debug.Log("camera is "+cam+ cam.transform.position);
 
         newo.transform.SetParent(cam.transform);
 

@@ -206,7 +206,7 @@ namespace Puzzle
             }
         }
 
-        private void GameOver(bool win)
+        private void GameOver(bool win=false)
         {
             if (win)
                 openedDoors++;

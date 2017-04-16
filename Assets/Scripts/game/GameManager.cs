@@ -155,13 +155,14 @@ public class GameManager : MonoBehaviour
         group.blocksRaycasts = enable;
         group.alpha = (enable) ? 1 : 0;
     }
-    public void OnGameFinished(bool win = true)
+    public void OnGameFinished(bool win = false)
     {
         if (win)
         {
             GameOverManager.Instance.ShowGameoverPanel(win);
             if (numberObject != null)
             {
+               
                 numberObject.SetActive(true);
                 print("other object events goes Here");
             }
