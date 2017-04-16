@@ -155,7 +155,7 @@ public class GameManager : MonoBehaviour
         group.blocksRaycasts = enable;
         group.alpha = (enable) ? 1 : 0;
     }
-    public void OnGameFinished(bool win = true)
+    public void OnGameFinished(bool win = false)
     {
         if (win)
         {
