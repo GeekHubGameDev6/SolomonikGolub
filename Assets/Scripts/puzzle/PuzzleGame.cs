@@ -208,10 +208,11 @@ namespace Puzzle
 
         private void GameOver(bool win)
         {
-            openedDoors++;
+            if (win)
+                openedDoors++;
             _puzzlePooler.DeactivateObjects();
             ShowAll();
-            gameOverPanel.SetActive(true);
+            //gameOverPanel.SetActive(true);
             GameManager.Instance.OnGameFinished(win);
             tipImage.gameObject.SetActive(false);
         }

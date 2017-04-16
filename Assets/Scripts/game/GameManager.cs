@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
             // GameManager.Instance.StartMiniGame(GameType.PuzzleGame);
             // StartMiniGame(GameType.MemoryGame);
 
-            ShowGameEndPanel();
+            StartMiniGame(GameType.PuzzleGame);
         }
     }
 
