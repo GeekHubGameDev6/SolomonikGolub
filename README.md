@@ -16,11 +16,11 @@ Irina Solomonik
 Yaroslav Golub 
 
 #Project Description (Brief):
-Game like "The Room", "Room escape" but for kids 6+
-First / Third person view, some times 2D view
-Collect puzzle parts to unlock mystery locks
-includes small 'puzzle' games 
-Game include 2-3 unique rooms.
-Few difficulty level
+Game like "The Room", "Room escape" .
+For kids 6+
+First  person view, some times 2D view
+Collect puzzle parts (numerics) to unlock door.
+It includes small 'puzzle' games. 
+Game includes 2-3 unique rooms.
 Dynamic puzzle generator
 Time-limit rounds option# SolomonikGolub
